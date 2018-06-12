@@ -40,7 +40,7 @@ function checkCollision(rock) {
       (rockLeftEdge <= dodgerLeftEdge && rockRightEdge >= dodgerLeftEdge) ||
       (rockLeftEdge >= dodgerLeftEdge && rockRightEdge <= dodgerRightEdge) ||
       (rockLeftEdge <= dodgerRightEdge && rockRightEdge >= dodgerRightEdge)
-        
+
     if (false /**
                * Think about it -- what's happening here?
                * There's been a collision if one of three things is true:
@@ -95,11 +95,11 @@ function createRock(x) {
      * we should remove the rock from the DOM
      */
      rock.style.top = `${top += 2}px`;
- 
+
      if (checkCollision(rock)) {
        return endGame()
      }
- 
+
      if (top < GAME_HEIGHT) {
        window.requestAnimationFrame(moveRock)
      } else {
@@ -137,11 +137,11 @@ function moveDodger(e) {
    * And be sure to use the functions declared below!
    */
    clearInterval(gameInterval)
-   
+
      ROCKS.forEach(function(rock) { rock.remove() })
-   
+
      document.removeEventListener('keydown', moveDodger)
-   
+
      START.innerHTML = 'Play again?'
      START.style.display = 'inline'
      return alert('YOU LOSE!')
@@ -161,6 +161,18 @@ function moveDodgerRight() {
    * This function should move DODGER to the right
    * (mabye 4 pixels?). Use window.requestAnimationFrame()!
    */
+   const code = e.which
+  
+    if ([LEFT_ARROW, RIGHT_ARROW].indexOf(code) > -1) {
+      e.preventDefault()
+      e.stopPropagation()
+    }
+  
+    if (code === LEFT_ARROW) {
+      moveDodgerLeft()
+    } else if (code === RIGHT_ARROW) {
+      moveDodgerRight()
+    }
 }
 
 /**
