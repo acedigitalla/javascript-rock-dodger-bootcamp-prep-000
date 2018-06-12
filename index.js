@@ -125,6 +125,16 @@ function createRock(x) {
  * Finally, alert "YOU LOSE!" to the player.
  */
 function endGame() {
+  clearInterval(gameInterval)
+
+  ROCKS.forEach(function(rock) { rock.remove() })
+
+  document.removeEventListener('keydown', moveDodger)
+
+  START.innerHTML = 'Play again?'
+  START.style.display = 'inline'
+
+  return alert('YOU LOSE!')
 }
 
 function moveDodger(e) {
@@ -136,15 +146,18 @@ function moveDodger(e) {
    * we've declared for you above.)
    * And be sure to use the functions declared below!
    */
-   clearInterval(gameInterval)
+   const code = e.which
 
-     ROCKS.forEach(function(rock) { rock.remove() })
+  if ([LEFT_ARROW, RIGHT_ARROW].indexOf(code) > -1) {
+    e.preventDefault()
+    e.stopPropagation()
+  }
 
-     document.removeEventListener('keydown', moveDodger)
-
-     START.innerHTML = 'Play again?'
-     START.style.display = 'inline'
-     return alert('YOU LOSE!')
+  if (code === LEFT_ARROW) {
+    moveDodgerLeft()
+  } else if (code === RIGHT_ARROW) {
+    moveDodgerRight()
+  }
 }
 
 function moveDodgerLeft() {
@@ -153,6 +166,13 @@ function moveDodgerLeft() {
    * This function should move DODGER to the left
    * (mabye 4 pixels?). Use window.requestAnimationFrame()!
    */
+   window.requestAnimationFrame(function() {
+     const left = positionToInteger(DODGER.style.left)
+ 
+     if (left > 0) {
+       DODGER.style.left = `${left - 4}px`;
+     }
+   })   
 }
 
 function moveDodgerRight() {
@@ -161,18 +181,25 @@ function moveDodgerRight() {
    * This function should move DODGER to the right
    * (mabye 4 pixels?). Use window.requestAnimationFrame()!
    */
-   const code = e.which
-  
+   window.requestAnimationFrame(function() {
+  const left = positionToInteger(DODGER.style.left)
+
+  if (left < 360) {
+    DODGER.style.left = `${left + 4}px`;
+  }
+})
+/*   const code = e.which
+
     if ([LEFT_ARROW, RIGHT_ARROW].indexOf(code) > -1) {
       e.preventDefault()
       e.stopPropagation()
     }
-  
+
     if (code === LEFT_ARROW) {
       moveDodgerLeft()
     } else if (code === RIGHT_ARROW) {
       moveDodgerRight()
-    }
+    } */
 }
 
 /**
